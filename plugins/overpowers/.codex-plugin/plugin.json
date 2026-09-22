@@ -1,0 +1,38 @@
+{
+  "name": "overpowers",
+  "version": "1.0.0",
+  "description": "A personal, lean software delivery workflow based on Superpowers.",
+  "author": {
+    "name": "Daniiislo (personal fork)"
+  },
+  "homepage": "https://github.com/Daniiislo/overpowers-kit",
+  "repository": "https://github.com/Daniiislo/overpowers-kit",
+  "license": "MIT",
+  "keywords": [
+    "planning",
+    "implementation",
+    "independent-testing",
+    "code-review",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Overpowers",
+    "shortDescription": "Lean, reliable planning and software delivery.",
+    "longDescription": "A personal workflow based on Superpowers, tuned for decision-complete plans, efficient implementation, one independent tester, controller review, and proportionate verification.",
+    "developerName": "Daniiislo",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use my Overpowers workflow for this software task."
+    ],
+    "brandColor": "#F59E0B",
+    "composerIcon": "./assets/overpowers-small.svg",
+    "logo": "./assets/app-icon.png",
+    "screenshots": []
+  }
+}

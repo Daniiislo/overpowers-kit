@@ -1,0 +1,20 @@
+{
+  "name": "overpowers-kit",
+  "interface": {
+    "displayName": "Overpowers Kit"
+  },
+  "plugins": [
+    {
+      "name": "overpowers",
+      "source": {
+        "source": "local",
+        "path": "./plugins/overpowers"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
