@@ -54,6 +54,14 @@ Select the least costly available model likely to succeed reliably, considering 
 
 Tester capability follows risk, not a rule that it must exceed the implementer. Milestone review is not automatically the strongest tier. Use only supported model IDs and permitted overrides; disclose unavailable routing rather than claiming a model switch.
 
+## Antigravity CLI Workers
+
+When the owner selects Antigravity CLI (`agy`) for implementation and testing, the controller remains responsible for briefs, scope, permissions, snapshots, result parsing, and acceptance. Follow [the Antigravity worker protocol](antigravity-cli-workers.md).
+
+Use separate Antigravity conversations for Implementer and Tester. Resume the Implementer for related fixes and the Tester for scoped rechecks; never let the Implementer approve its own work. Treat a denied action, missing terminal result, empty response, changed Tester snapshot, or unexecuted required check as failure or `BLOCKED` even when the process exits `0` or reports `SUCCESS`.
+
+Because Antigravity sessions have substantial context overhead, use them for coherent tasks where delegation adds value, not trivial edits that the controller can safely complete and verify more cheaply.
+
 ## Verification and Fixes
 
 - Tester works in a separate context, independently checks acceptance and likely regressions, and returns PASS / FAIL / CONCERNS / BLOCKED with evidence.

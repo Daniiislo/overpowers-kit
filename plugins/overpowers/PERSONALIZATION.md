@@ -1,5 +1,14 @@
 # Personalization Record
 
+## 2026-09-24 — Antigravity CLI worker protocol
+
+- Codex remains the Controller while `agy` may serve as the bounded Implementer and independent Tester.
+- Implementer and Tester use separate explicitly bound Antigravity projects/conversations; related fixes and rechecks resume their original role conversations.
+- Headless runs use streamed JSON, durable stdout/stderr capture, narrow command permissions, and controller-side parsing of tool events and the terminal result.
+- Exit code `0` or result status `SUCCESS` is insufficient when actions were denied, the response is empty, required checks did not execute, or the Tester changed the snapshot.
+- Windows command grants use narrowly scoped regex rules where literal prefix matching does not cover arguments.
+- Antigravity delegation is reserved for coherent tasks because each conversation has material context/quota overhead.
+
 ## 2026-09-22 — Overpowers 1.0 baseline
 
 - Upstream base: Superpowers 6.4.1.
