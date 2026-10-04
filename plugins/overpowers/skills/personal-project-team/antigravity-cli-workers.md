@@ -7,8 +7,8 @@ Use this protocol when Codex is the Controller and the `antigravity-bridge` MCP 
 1. Confirm `antigravity-bridge` is discovered and use `list_models(refresh: true)` only when a model must be selected explicitly.
 2. Call `create_worker(role, workspace, model?, effort?, constraints?)` separately for Implementer and Tester. Keep their worker IDs distinct.
 3. Call `dispatch_task(worker_id, brief)` and retain the returned job ID. Dispatch returns immediately; it is not completion evidence.
-4. Poll `wait_task(job_id, wait_ms, after_cursor)` with bounded waits. Advance `after_cursor` to the returned cursor. Use `agy_events` for additional filtered observation without changing execution.
-5. When terminal, call `inspect_task(job_id)`. Check the response, tool/step events, denied actions, errors, usage, conversation ID, and required verification evidence.
+4. Wait on task completion using `wait_task(job_id, wait_ms: 60000)` WITHOUT passing `after_cursor`. Do NOT stream or poll intermediate cursor events in an LLM loop — intermediate progress is tracked by humans via the Web Dashboard (`open_dashboard`), not by burning controller LLM tokens. If `wait_task` returns `terminal: false`, wait again.
+5. When terminal (`terminal: true`), call `inspect_task(job_id)` ONCE to check the response, tool/step events, denied actions, errors, usage, conversation ID, and required verification evidence.
 6. For a related fix or recheck, call `send_followup` on the same role worker and repeat bounded wait plus inspection. Create a new worker for unrelated work or lost context.
 7. Use `cancel_task` for obsolete work. Active cancellation invalidates that worker conversation. Call `close_worker` after the checkpoint is accepted or abandoned.
 8. Use `agy_history` to recover completed job summaries after an MCP restart; use `inspect_task` for the persisted job detail.
