@@ -56,9 +56,11 @@ Tester capability follows risk, not a rule that it must exceed the implementer. 
 
 ## Antigravity CLI Workers
 
-When the owner selects Antigravity CLI (`agy`) for implementation and testing, the controller remains responsible for briefs, scope, permissions, snapshots, result parsing, and acceptance. Follow [the Antigravity worker protocol](antigravity-cli-workers.md).
+When the owner selects Antigravity for implementation and testing, prefer the installed `antigravity-bridge` MCP server. The controller remains responsible for briefs, scope, permissions, snapshots, event/result inspection, and acceptance. Follow [the Antigravity worker protocol](antigravity-cli-workers.md).
 
-Use separate Antigravity conversations for Implementer and Tester. Resume the Implementer for related fixes and the Tester for scoped rechecks; never let the Implementer approve its own work. Treat a denied action, missing terminal result, empty response, changed Tester snapshot, or unexecuted required check as failure or `BLOCKED` even when the process exits `0` or reports `SUCCESS`.
+Use `list_models` only when model selection is material. Create separate workers with `create_worker` for Implementer and Tester, dispatch without blocking, observe with `wait_task`/`agy_events`, and accept only after `inspect_task`. Use `send_followup` on the same worker for related fixes or scoped rechecks, then `close_worker` at the accepted checkpoint. Never let the Implementer approve its own work. Treat denied actions, missing terminal results, empty responses, changed Tester snapshots, or unexecuted required checks as failure or `BLOCKED` even when a process or result reports `SUCCESS`.
+
+Use direct `agy -p` invocation only when the bridge is unavailable, undiscoverable, or fails its health/smoke check. Do not silently fall back after dispatching a bridge job: inspect/cancel/close the existing job first so duplicate workers cannot race on the same workspace.
 
 Because Antigravity sessions have substantial context overhead, use them for coherent tasks where delegation adds value, not trivial edits that the controller can safely complete and verify more cheaply.
 

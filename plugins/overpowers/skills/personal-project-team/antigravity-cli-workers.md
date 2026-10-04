@@ -1,6 +1,19 @@
-# Antigravity CLI Worker Protocol
+# Antigravity Worker Protocol
 
-Use this protocol when Codex is the Controller and Antigravity CLI (`agy`) supplies the bounded Implementer and independent Tester.
+Use this protocol when Codex is the Controller and the `antigravity-bridge` MCP server supplies bounded Antigravity Implementers and independent Testers. The direct CLI procedure remains a fallback.
+
+## Preferred MCP Bridge Flow
+
+1. Confirm `antigravity-bridge` is discovered and use `list_models(refresh: true)` only when a model must be selected explicitly.
+2. Call `create_worker(role, workspace, model?, effort?, constraints?)` separately for Implementer and Tester. Keep their worker IDs distinct.
+3. Call `dispatch_task(worker_id, brief)` and retain the returned job ID. Dispatch returns immediately; it is not completion evidence.
+4. Poll `wait_task(job_id, wait_ms, after_cursor)` with bounded waits. Advance `after_cursor` to the returned cursor. Use `agy_events` for additional filtered observation without changing execution.
+5. When terminal, call `inspect_task(job_id)`. Check the response, tool/step events, denied actions, errors, usage, conversation ID, and required verification evidence.
+6. For a related fix or recheck, call `send_followup` on the same role worker and repeat bounded wait plus inspection. Create a new worker for unrelated work or lost context.
+7. Use `cancel_task` for obsolete work. Active cancellation invalidates that worker conversation. Call `close_worker` after the checkpoint is accepted or abandoned.
+8. Use `agy_history` to recover completed job summaries after an MCP restart; use `inspect_task` for the persisted job detail.
+
+Do not treat `dispatch_task`, a running process, cursor movement, or terminal status alone as success. A `SUCCESS` result with an empty response is failure. If an MCP connection disappears, inspect persisted history before launching replacement work.
 
 ## Preflight
 
@@ -24,7 +37,11 @@ Use this protocol when Codex is the Controller and Antigravity CLI (`agy`) suppl
 
 Derive test/build rules from the repository's documented commands. Prefer project-scoped rules; use global rules only when the owner intentionally wants the same grant across projects. Remove temporary task-specific grants after the worker checkpoint. Do not grant broad shell, network, MCP, push, destructive Git, or global filesystem access merely to avoid a prompt. Remember that an allowed test command executes repository-controlled code. Do not use `--dangerously-skip-permissions` for normal project work.
 
-## Reliable Invocation
+## Direct CLI Fallback
+
+Use the rest of this section only when the MCP bridge is unavailable, undiscoverable, or unhealthy. Record that fallback in the handoff and do not run it concurrently with an unresolved bridge job in the same workspace.
+
+### Reliable Invocation
 
 Start an unrelated role or task with a new Antigravity project bound explicitly to the intended workspace:
 
@@ -44,7 +61,7 @@ Use `--new-project --add-dir` even when the process working directory is correct
 
 Capture stdout and stderr separately. If the host can yield before `agy` finishes, run it through a waiting wrapper and redirect stdout to an NDJSON log so the child process and terminal result are not lost. Keep temporary prompts and logs outside the task's accepted source diff.
 
-## Implementer Contract
+### Implementer Contract
 
 Give the Implementer a decision-complete brief containing:
 
@@ -58,7 +75,7 @@ Give the Implementer a decision-complete brief containing:
 
 Require dedicated file-editing tools for source changes. Record the terminal `conversation_id`. For related fixes, resume only that Implementer with `--conversation <id>` and include the Tester's exact finding and required recheck.
 
-## Independent Tester Contract
+### Independent Tester Contract
 
 Start the Tester with a separate new conversation; never continue or import the Implementer's conversation. Give it the requirement, identified snapshot/diff, allowed read-only commands, and expected verdict format.
 
@@ -66,7 +83,7 @@ The Tester must not edit source, tests, index, HEAD, configuration, prompts, or 
 
 ## Controller Acceptance
 
-Parse the final `result` event rather than trusting only process exit code. Accept a worker result only when all of these hold:
+For MCP jobs, inspect `inspect_task`; for CLI fallback, parse the final `result` event rather than trusting only process exit code. Accept a worker result only when all of these hold:
 
 - the process completed and a terminal `result` event exists;
 - `status` is `SUCCESS` and `response` is non-empty;

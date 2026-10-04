@@ -1,5 +1,12 @@
 # Personalization Record
 
+## 2026-10-04 — MCP-first Antigravity workers
+
+- `personal-project-team` now prefers the installed `antigravity-bridge` MCP server for Implementer and independent Tester work.
+- The controller uses explicit worker/job lifecycle tools, bounded waits, cursor-based events, persisted inspection/history, and closes workers at accepted or abandoned checkpoints.
+- Direct `agy -p` remains a documented fallback only when the bridge is unavailable or unhealthy; unresolved bridge jobs must be inspected, canceled, or closed before fallback to avoid duplicate workers.
+- Acceptance explicitly rejects denied actions, missing terminal results, and empty `SUCCESS` responses.
+
 ## 2026-09-24 — Antigravity CLI worker protocol
 
 - Codex remains the Controller while `agy` may serve as the bounded Implementer and independent Tester.
