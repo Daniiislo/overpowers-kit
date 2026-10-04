@@ -1,11 +1,13 @@
 ---
 name: personal-project-team
-description: Use when planning, implementing, testing, reviewing, or delivering software for this owner, or updating the owner's reusable team and model-allocation preferences.
+description: Use for non-trivial software planning, implementation, testing, review, or delivery, or when updating the owner's reusable team and model-allocation preferences.
 ---
 
 # Personal Project Team
 
 The owner's cross-project default: clear decisions, bounded implementation, one independent tester, and accountable controller review. Keep necessary evidence; remove duplicated ceremony.
+
+Do not invoke this profile for a simple, low-risk, self-contained task that the controller can implement and verify directly. Examples include a small documentation correction, a mechanical metadata edit, or a narrowly specified local change with deterministic verification. Use the profile when ambiguity, multiple components, meaningful regression risk, delegation, independent acceptance, or consequential delivery justifies the team workflow.
 
 Read this profile once when relevant; reuse it while unchanged. Repository instructions and higher-priority tool/safety rules still apply. A global preference does not silently remove a repository gate. Identify conflicts and propose the smallest explicit project-policy update when needed.
 

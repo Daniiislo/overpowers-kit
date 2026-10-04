@@ -12,7 +12,7 @@ and role template. Do not restart the controller's skill-selection workflow.
 
 Check applicable skills before acting. Invoke a named skill or one whose trigger clearly matches the request. Do not invoke unrelated skills merely because there is a remote possibility they apply.
 
-For software work with this owner, use overpowers:personal-project-team as the default role, delegation, verification and model-routing profile. Repository instructions and direct user requirements take priority. Skills guide execution; they do not create authority to mutate external state, push, merge, release, or bypass policy.
+For non-trivial software work with this owner, use overpowers:personal-project-team as the default role, delegation, verification and model-routing profile. Skip it for simple, low-risk, self-contained work that the controller can implement and verify directly. Repository instructions and direct user requirements take priority. Skills guide execution; they do not create authority to mutate external state, push, merge, release, or bypass policy.
 
 ## Selection Order
 

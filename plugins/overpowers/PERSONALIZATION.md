@@ -1,5 +1,10 @@
 # Personalization Record
 
+## 2026-10-04 — Skip team workflow for simple tasks
+
+- `personal-project-team` is no longer invoked for simple, low-risk, self-contained work that the controller can implement and verify directly.
+- The team workflow remains the default when ambiguity, cross-component impact, regression risk, delegation, independent acceptance, or consequential delivery warrants it.
+
 ## 2026-10-04 — MCP-first Antigravity workers
 
 - `personal-project-team` now prefers the installed `antigravity-bridge` MCP server for Implementer and independent Tester work.
